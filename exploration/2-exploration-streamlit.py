@@ -1,4 +1,6 @@
 import streamlit as st
+from streamlit_drawable_canvas import st_canvas
+from PIL import Image
 import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
@@ -8,6 +10,7 @@ import sys
 sys.path.append('../')
 from functions.graphs import gauge_chart
 
+st.set_page_config(layout="wide")
 
 @st.cache_data
 def load_tracking_data():
@@ -18,9 +21,8 @@ df_tracking = load_tracking_data()
 angles_knee = df_tracking[df_tracking['min_height_ankle'] == True]['angle_knee'].values
 angles_elbow = df_tracking['angle_elbow'].values
 angles_shoulder = df_tracking['angle_shoulder'].values
+angles_torso = df_tracking['angle_torso'].values
 
-
-st.set_page_config(layout="wide")
 st.title('Bike fitting 🚴')
 
 st.markdown('###')
@@ -34,6 +36,8 @@ c1.write('Elbow angle')
 c1.plotly_chart(gauge_chart(angles_elbow, [90, 180], [155, 165], title='Elbow angle - summary'))
 c1.write('Shoulder angle')
 c1.plotly_chart(gauge_chart(angles_shoulder, [60, 150], [85, 95], title='Shoulder angle - summary'))
+c1.write('Torso angle')
+c1.plotly_chart(gauge_chart(angles_torso, [20, 80], [30, 45], title='Torso angle - summary'))
 
 st.markdown('###')
 
@@ -48,7 +52,6 @@ with st.expander('Detailed analysis - Knee angle'):
 
     c1_knee.subheader('Distribution of knee angle')
 
-
     col11, col12, col13 = c1_knee.columns(3)
     col11.metric('Lower bound', int(np.min(angles_knee)))
     col12.metric('Average angle', int(np.mean(angles_knee)))
@@ -59,3 +62,9 @@ with st.expander('Detailed analysis - Knee angle'):
     frame_file = open(f'../data/tmp_frames/frame_{frame}.jpg', 'rb')
     frame_bytes = frame_file.read()
     c2_knee.image(frame_bytes)
+
+with st.expander('All frames'):
+    all_frames = st.selectbox('Select a frame', df_tracking['frame'].values)
+    frame_file = open(f'../data/tmp_frames/frame_{all_frames}.jpg', 'rb')
+    frame_bytes = frame_file.read()
+    st.image(frame_bytes)
