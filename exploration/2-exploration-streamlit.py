@@ -1,10 +1,6 @@
 import streamlit as st
-from streamlit_drawable_canvas import st_canvas
-from PIL import Image
 import pandas as pd
 import numpy as np
-import plotly.graph_objects as go
-import matplotlib.pyplot as plt
 import sys
 
 sys.path.append('../')

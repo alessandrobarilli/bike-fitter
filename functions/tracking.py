@@ -5,6 +5,7 @@ landmarks_mapping = {
     'left_hip': 23,
     'left_knee': 25,
     'left_ankle': 27,
+    'right_ankle': 28,
     'left_shoulder': 11,
     'left_elbow': 13,
     'left_wrist': 15,
