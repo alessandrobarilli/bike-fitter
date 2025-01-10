@@ -1,6 +1,17 @@
 import numpy as np
 
 
+landmarks_dict = {
+    'left_hip': [],
+    'left_knee': [],
+    'left_ankle': [],
+    'right_ankle': [],
+    'left_shoulder': [],
+    'left_elbow': [],
+    'left_wrist': [],
+}
+
+
 landmarks_mapping = {
     'left_hip': 23,
     'left_knee': 25,
