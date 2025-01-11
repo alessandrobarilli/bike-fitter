@@ -37,7 +37,7 @@ def process_video(cap, path_video, frames_to_skip_beginning,
 
     # is there a way to process it faster and not frame by frame?
     # possibility to save the edited video with landmarks and stuff
-    print('Processing video...')
+    print('\n\nProcessing video...')
     while cap.isOpened():
         ret, frame = cap.read()
         frame_count += 1
@@ -76,7 +76,7 @@ def process_video(cap, path_video, frames_to_skip_beginning,
 
             # save the image as compressed jpg 
             cv2.imwrite(f'data/tmp_frames/frame_{frame_count - frames_to_skip_beginning + 1}.jpg', image)
-    print(f"Frames processed: {frame_count - frames_to_skip_beginning}")
+    print(f"\n\nFrames processed: {frame_count - frames_to_skip_beginning}")
     cv2.destroyAllWindows()
     cv2.waitKey(1)  # without this, will not close properly
     cap.release()
@@ -148,9 +148,21 @@ def get_coordinates_from_video(sample_imgs, monitor_width, monitor_height, msg='
                         print(f"iteration {i + 1} of {len(sample_imgs)} - Captured coordinates ({x}, {y}), press any key to continue")
                     coordinates_sampled.append((x, y))
                     cv2.destroyWindow("frame")
-                    
+
                 if type_coordinates == 'line':
-                    pass
+                    print(f"Captured tube coordinates ({x}, {y}), press any key to continue")
+                    coordinates_sampled.append((x, y))
+
+
+                    if len(coordinates_sampled) == 2:
+                        cv2.line(img_rescaled_tmp, coordinates_sampled[0], coordinates_sampled[1], (0, 0, 255), 2)
+                        cv2.imshow("frame", img_rescaled_tmp)
+                        cv2.waitKey(200)
+                        cv2.destroyWindow("frame")
+
+                        print(f'Tube coordinates obtained (rescaled image): {coordinates_sampled}')
+                        print('press any key to continue ...')
+
 
 
         cv2.imshow('frame', img_rescaled)
@@ -160,6 +172,6 @@ def get_coordinates_from_video(sample_imgs, monitor_width, monitor_height, msg='
         cv2.destroyAllWindows()
         cv2.waitKey(1)
 
-    coordinates = ((1 / scale) * np.array(coordinates_sampled).mean(axis=0)).astype(int)
+    coordinates = ((1 / scale) * np.array(coordinates_sampled)).astype(int)
     print(f"Pedal coordinates obtained (original frame sizes): {coordinates}")
     return coordinates

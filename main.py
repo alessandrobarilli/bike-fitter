@@ -1,11 +1,18 @@
 import cv2
 import mediapipe as mp
+import numpy as np
 import pandas as pd
 import os
+import streamlit as st
 
-from functions.geometry import angle_between
+from functions.geometry import angle_between, euclidean_distance
 from functions.tracking import landmarks_dict
 from functions.video_processing import process_video, get_coordinates_from_video
+from functions.graphs import gauge_chart
+
+
+"""Inputs and initializations"""
+
 
 for file in os.listdir('data/tmp_frames'):
     os.remove(f'data/tmp_frames/{file}')
@@ -20,11 +27,13 @@ pose = mp_pose.Pose()
 mp_drawing = mp.solutions.drawing_utils
 
 # inputs
+tube_length_cm = 54
 seconds_to_skip_beginning = 30
-seconds_to_skip_end = 15
+seconds_to_skip_end = 30
 path_video = 'data/IMG_1476.mov'
 monitor_width = 3440
 monitor_height = 1440
+image_samples = 2
 
 # output (optional)
 out_filename = 'tmp.mp4'
@@ -71,18 +80,23 @@ pedal_coordinates_sampled = []
 tube_coordinates_sampled = []
 frames_parallel_pedals = df_tracking[df_tracking['parallel_pedals'] == True]
 
-sample_frames = frames_parallel_pedals.sample(3)['frame'].values
+sample_frames = frames_parallel_pedals.sample(image_samples)['frame'].values
 parallel_pedal_images = []
 for i, sample_frame in enumerate(sample_frames):
     parallel_pedal_images.append(cv2.imread(f'data/tmp_frames/frame_{sample_frame}.jpg'))
 
 pedal_coordinates_sampled = get_coordinates_from_video(parallel_pedal_images, monitor_width, monitor_height, msg='', type_coordinates='point')
+knee_coordinates_sampled = get_coordinates_from_video(parallel_pedal_images, monitor_width, monitor_height, msg='', type_coordinates='point')
+tube_coordinates_sampled = get_coordinates_from_video([parallel_pedal_images[0]], monitor_width, monitor_height, msg='', type_coordinates='line')
+knee_pedal_distance_pixels = abs(pedal_coordinates_sampled.mean(axis=0).astype(int)[0]- knee_coordinates_sampled.mean(axis=0).astype(int)[0])
+tube_length_pixels = euclidean_distance(tube_coordinates_sampled[0], tube_coordinates_sampled[1])
 
+print(f'pedal estimated position on img: {pedal_coordinates_sampled.mean(axis=0).astype(int)}')
+print(f'knee estimated position on img: {knee_coordinates_sampled.mean(axis=0).astype(int)}')
+print(f'tube length in pixels: {tube_length_pixels}')
+print(f'knee pedal distance in pixels: {knee_pedal_distance_pixels}')
+print(f'knee pedal distance in cm: {(knee_pedal_distance_pixels / tube_length_pixels) * tube_length_cm}')
 
-print(pedal_coordinates_sampled)
-
-
-
-
+df_tracking['knee_over_pedal'] = (knee_pedal_distance_pixels / tube_length_pixels) * tube_length_cm
 
 df_tracking.to_csv('data/tmp_tracking.csv', index=False)
