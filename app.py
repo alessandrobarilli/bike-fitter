@@ -17,7 +17,11 @@ angles_knee = df_tracking[df_tracking['min_height_ankle'] == True]['angle_knee']
 angles_elbow = df_tracking['angle_elbow'].values
 angles_shoulder = df_tracking['angle_shoulder'].values
 angles_torso = df_tracking['angle_torso'].values
-knee_over_pedal = df_tracking['knee_over_pedal'].values[0]
+
+interactive = False
+if 'knee_over_pedal' in df_tracking.columns:
+    interactive = True
+    knee_over_pedal = df_tracking['knee_over_pedal'].values[0]
 
 st.title('Bike fitting 🚴')
 
@@ -26,14 +30,19 @@ st.markdown('###')
 st.subheader('Summary') 
 
 c1, c2 = st.columns(2)
-c1.write('Knee over pedal distance: optimal range [-3, 1] (cm)')
-c1.plotly_chart(gauge_chart(knee_over_pedal, [-10, 10], [-3, 1], title='Knee over pedal distance - summary'))
+if interactive:
+    c1.write('Knee over pedal distance: optimal range [-3, 1] (cm)')
+    c1.plotly_chart(gauge_chart(knee_over_pedal, [-10, 10], [-3, 1], title='Knee over pedal distance - summary'))
+    c1.markdown('######')
 c1.write('Knee angle: optimal range [140, 150]')
 c1.plotly_chart(gauge_chart(angles_knee, [120, 180], [140, 150], title='Knee angle - summary'))
+c1.markdown('######')
 c1.write('Elbow angle: optimal range [155, 165]')
 c1.plotly_chart(gauge_chart(angles_elbow, [90, 180], [155, 165], title='Elbow angle - summary'))
+
 c2.write('Shoulder angle: optimal range [85, 95]')
 c2.plotly_chart(gauge_chart(angles_shoulder, [60, 150], [85, 95], title='Shoulder angle - summary'))
+c2.markdown('######')
 c2.write('Torso angle: optimal range [30, 45]')
 c2.plotly_chart(gauge_chart(angles_torso, [20, 80], [30, 45], title='Torso angle - summary'))
 

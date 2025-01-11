@@ -6,7 +6,7 @@ The aim of this project is to build an **open source bike fitter**, combining **
 ![Summary](images/summary_preview.png)
 
 
-#### Setup 👨‍💻
+#### Setup with local virtual environment 👨‍💻
 
 ```
 # Create a virtual environment
@@ -19,10 +19,14 @@ source myenv/bin/activate
 pip install -r requirements.txt
 
 #  Running the pipeline
-python main.py && streamlit run app.py
+python main.py --interactive=True && streamlit run app.py
+
+# Without interactive mode (knee over pedal measurements)
+python main.py --interactive=False && streamlit run app.py
+
 ```
 
-#### Methodology 📈
+#### Methodology 🧮
 ##### 1. Using **OpenCV** and **Mediapipe** open source frameworks
 ##### 2. Ranges estimation for optimal joint flexions/measurements
 1. Reading Video
