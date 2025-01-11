@@ -1,7 +1,10 @@
-# Open Bike Fitter 🚴
+# Open Bike Fitter
 
 #### Intro
 The aim of this project is to build an **open source bike fitter**, combining **computer vision** and theoretical **ideal measurements**
+
+![Summary](images/summary_preview.png)
+
 
 #### Setup 👨‍💻
 
