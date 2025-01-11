@@ -2,3 +2,5 @@
 /data
 /todo.md
 /venv
+__pycache__
+/functions/__pycache__/

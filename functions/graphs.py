@@ -9,6 +9,10 @@ def gauge_chart(
         dimensions: tuple = (600, 20),
         title: str = ""
 ) -> go.Figure:
+    
+    color_range = "lightgreen" if optimal_range[0] <= np.mean(var) <= optimal_range[1] else "lightcoral"
+    color_bullet = "darkgreen" if optimal_range[0] <= np.mean(var) <= optimal_range[1] else "darkred"
+
     # Create the gauge chart
     gauge_fig = go.Figure(go.Indicator(
         mode="gauge+number",
@@ -16,9 +20,10 @@ def gauge_chart(
         title={'text': title},
         gauge={
             'shape': "bullet",
+            'bar': {'color': color_bullet},
             'axis': {'range': valid_range},
             'steps': [
-                {'range': optimal_range, 'color': "lightgreen"},
+                {'range': optimal_range, 'color': color_range},
             ],
         })
     )
@@ -29,6 +34,7 @@ def gauge_chart(
         margin=dict(t=0, b=0),
         width=dimensions[0],
         height=dimensions[1],
+        font = {'color': color_range},
     )
 
     return gauge_fig
