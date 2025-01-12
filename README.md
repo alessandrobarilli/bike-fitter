@@ -18,6 +18,9 @@ source myenv/bin/activate
 # Install dependencies from requirements.txt
 pip install -r requirements.txt
 
+# create a data folder and tmp folder inside of data
+mkdir -p data/tmp 
+
 #  Running the pipeline
 python main.py --interactive=True && streamlit run app.py
 

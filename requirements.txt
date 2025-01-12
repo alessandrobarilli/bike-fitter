@@ -63,6 +63,7 @@ Pygments==2.18.0
 pyparsing==3.2.0
 python-dateutil==2.9.0.post0
 pytz==2024.2
+PyYAML==6.0.2
 pyzmq==26.2.0
 referencing==0.35.1
 requests==2.32.3
@@ -76,6 +77,7 @@ sounddevice==0.5.1
 stack-data==0.6.3
 streamlit==1.41.1
 streamlit-drawable-canvas==0.9.3
+streamlit-plotly-events==0.0.6
 tenacity==9.0.0
 toml==0.10.2
 tornado==6.4.2

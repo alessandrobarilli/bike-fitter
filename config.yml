@@ -1,0 +1,23 @@
+path_video: 'data/IMG_1476.mov'
+
+# Length of the bike upper tube in centimeters
+tube_length_cm: 54
+
+# Number of seconds to skip at thebeginning and  end of the video
+seconds_to_skip_beginning: 30
+seconds_to_skip_end: 30
+
+# Width and height of the current monitor in pixels
+monitor_width: 3440
+monitor_height: 1440
+
+# Number of image samples to process for coordinates estimation
+image_samples: 2
+
+# Output filename for the processed video
+out_filename: 'tmp.mp4'
+
+# processing thresholds
+create_output_video: False
+local_minimum_threshold: 0.005
+degree_threshold_parallel_pedals: 3
