@@ -2,6 +2,7 @@
 /data
 /todo.md
 /venv
+/py310env
 __pycache__
 /functions/__pycache__/
 .vscode
